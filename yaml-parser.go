@@ -1,44 +1,46 @@
 package main
 
 import (
-        "log"
-        "fmt"
-        "io/ioutil"
-        "gopkg.in/yaml.v2"
+	"io/ioutil"
+	"log"
+
+	"gopkg.in/yaml.v2"
 )
 
 type Command struct {
-        Cmd string `yaml:"cmd"`
-        Key string `yaml:"key"`
+	Cmd string `yaml:"cmd"`
+	Key string `yaml:"key"`
 }
 
 type Commands struct {
-        Cmds []Command `yaml:"commands"`
+	Cmds []Command `yaml:"commands"`
 }
 
-func main() {
-        log.Println("Start application")
-        data, err := ioutil.ReadFile("file.yaml")
-        CheckError(err)
+func GetCommands(filepath string) map[string]string {
+	data, err := ioutil.ReadFile(filepath)
+	CheckError(err)
 
-        commands := Commands{}
-        err = yaml.Unmarshal([]byte(data), &commands)
-        CheckError(err)
+	commands := Commands{}
+	err = yaml.Unmarshal(data, &commands)
+	CheckError(err)
 
-        c := commands.Cmds
-        fmt.Println(c)
+	cMap := make(map[string]string)
+	for _, v := range commands.Cmds {
+		cMap[v.Key] = v.Cmd
+	}
 
-        cMap := map[string]string{}
-        for _, v := range c {
-                cMap[v.Key] = v.Cmd
-        }
+	return cMap
+}
 
-        fmt.Println(cMap)
-        fmt.Println("chosen aaaaaaaaaaaaaaa: Command: ",cMap["aaaaaaaaaaaaaaa"])
+func PrintConfiguration(c map[string]string) {
+	log.Println("Configuration. Voice command : Command on PC")
+	for k, v := range c {
+		log.Println("[Mapping] ", k, " : ", v)
+	}
 }
 
 func CheckError(e error) {
-        if e != nil {
-                log.Fatalf("error: %v", e)
-        }
+	if e != nil {
+		log.Fatalf("ERROR: %v", e)
+	}
 }
