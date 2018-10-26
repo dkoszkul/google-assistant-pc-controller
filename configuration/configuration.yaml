@@ -1,0 +1,5 @@
+commands:
+- cmd: polecenie cmd
+  key: to cos mi powiedzialo
+- cmd: drugie polecenie
+  key: aaaaaaaaaaaaaaa
