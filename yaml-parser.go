@@ -34,7 +34,7 @@ func main() {
         }
 
         fmt.Println(cMap)
-
+        fmt.Println("chosen aaaaaaaaaaaaaaa: Command: ",cMap["aaaaaaaaaaaaaaa"])
 }
 
 func CheckError(e error) {
